@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MediatR" Version="12.5.0" />
+    <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="9.0.4" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.4" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\MeetBriefly.Application\MeetBriefly.Application.csproj" />
+    <ProjectReference Include="..\MeetBriefly.Core\MeetBriefly.Core.csproj" />
+    <ProjectReference Include="..\MeetBriefly.Infrastructure\MeetBriefly.Infrastructure.csproj" />
+  </ItemGroup>
+
+</Project>
