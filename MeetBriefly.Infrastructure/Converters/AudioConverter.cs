@@ -22,7 +22,7 @@ namespace MeetBriefly.Infrastructure.Converters
             WaveFileWriter.WriteWavFileToStream(outStream, pcmStream);
 
             outStream.Position = 0;
-            return outStream; // ¡Este stream sí está abierto!
+            return outStream;
         }
     }
 }

@@ -6,21 +6,25 @@ using Azure.Messaging;
 using OpenAI.Chat;
 using System.Text.Json;
 using MeetBriefly.Core.Entities;
+using Microsoft.Extensions.Configuration;
 
 namespace MeetBriefly.Infrastructure.Services
 {
     public class TextSumarizationService : ITextSumarizationService
     {
-        private readonly string _azureApiKey = "F8RnDztLd4nPRjgOE3TbBs9aDB4y5aNw0JzWMPiBEi089M8nbN4iJQQJ99BEACYeBjFXJ3w3AAABACOGJG4e";
-        private readonly string _region = "eastus";
-        private readonly string _language = "es";
-        private readonly string _endpoint = "https://meetbriefly-openai.openai.azure.com/";
+        private readonly string _azureApiKey;
+        private readonly string _endpoint;
         private readonly AzureOpenAIClient _client;
-        private readonly string _deployment = "meetbriefly-gpt-4o";
+        private readonly string _deployment;
+        private readonly IConfiguration _configuration;
 
 
-        public TextSumarizationService()
+        public TextSumarizationService(IConfiguration configuration)
         {
+            _configuration = configuration;
+            _azureApiKey = _configuration["AzureOpenAIKey"]!.ToString();
+            _endpoint = _configuration["MeetBrieflyChatEndpoint"]!.ToString();
+            _deployment = _configuration["MeetBrieflyChatDeployment"]!.ToString();
             _client = new AzureOpenAIClient(new Uri(_endpoint), new AzureKeyCredential(_azureApiKey));
         }
         public async Task<string> SumarizeTextAsync(string text)
@@ -36,7 +40,7 @@ namespace MeetBriefly.Infrastructure.Services
                 ""{ text}""
             ";
 
-            var chatClient = _client.GetChatClient("meetbriefly-gpt-4o");
+            var chatClient = _client.GetChatClient(_deployment);
 
             var messages = new List<ChatMessage>
             {
@@ -48,8 +52,7 @@ namespace MeetBriefly.Infrastructure.Services
                 MaxOutputTokenCount=800,
                 TopP = (float)0.95,
                 FrequencyPenalty = (float)0,
-                PresencePenalty = (float)0,
-
+                PresencePenalty = (float)0
             };
 
             try
