@@ -39,7 +39,6 @@ namespace MeetBriefly.Infrastructure.Services
 
             var audioConfig = AudioConfig.FromWavFileInput(tempPath);
 
-
             var recognizer = new SpeechRecognizer(speechConfig, audioConfig);
             var result = await recognizer.RecognizeOnceAsync();
 
