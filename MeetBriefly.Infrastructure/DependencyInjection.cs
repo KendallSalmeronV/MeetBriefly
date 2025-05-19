@@ -1,4 +1,5 @@
 ﻿using MeetBriefly.Core.Interfaces;
+using MeetBriefly.Infrastructure.Converters;
 using MeetBriefly.Infrastructure.Services;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -16,6 +17,7 @@ namespace MeetBriefly.Infrastructure
         {
             services.AddScoped<IAudioService, AudioService>();
             services.AddScoped<ITextSumarizationService, TextSumarizationService>();
+            services.AddScoped<IAudioConverter, AudioConverter>();
             return services;
         }
     }

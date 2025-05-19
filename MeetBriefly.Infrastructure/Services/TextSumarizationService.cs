@@ -3,6 +3,9 @@ using Azure;
 using Azure.AI.OpenAI;
 using Azure.AI.OpenAI.Chat;
 using Azure.Messaging;
+using OpenAI.Chat;
+using System.Text.Json;
+using MeetBriefly.Core.Entities;
 
 namespace MeetBriefly.Infrastructure.Services
 {
@@ -33,15 +36,37 @@ namespace MeetBriefly.Infrastructure.Services
                 ""{ text}""
             ";
 
-            var messages = new List<ChatMessageContext>
+            var chatClient = _client.GetChatClient("meetbriefly-gpt-4o");
+
+            var messages = new List<ChatMessage>
             {
-                new MessageContent(ChatMessageRole.System, "Eres un asistente de reuniones profesional"),
-                new ChatMessageContext(ChatMessageRole.User, prompt)
+                new SystemChatMessage(prompt)
+            };
+            var chatCompletionsOptions = new ChatCompletionOptions
+            {
+                Temperature = (float)0.7,
+                MaxOutputTokenCount=800,
+                TopP = (float)0.95,
+                FrequencyPenalty = (float)0,
+                PresencePenalty = (float)0,
+
             };
 
+            try
+            {
+                var completion = await chatClient.CompleteChatAsync(messages, options: chatCompletionsOptions);
+                if (completion != null)
+                {
+                    return completion.Value.Content[0].Text;
+                }
+                return string.Empty;
+            }
+            catch (Exception)
+            {
 
-            var response = await _client.GetChatCompletionsAsync("")
-            
+                throw;
+            }   
+
         }
     }
 }
