@@ -26,7 +26,6 @@ namespace MeetBriefly.Infrastructure.Services
 
         public async Task<string> TranscribeAudioAsync(IFormFile audioFile)
         {
-
             var speechConfig = SpeechConfig.FromEndpoint(new Uri("https://eastus.api.cognitive.microsoft.com/"), _azureApiKey);
             speechConfig.SpeechRecognitionLanguage = "es-CR";
 
